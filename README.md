@@ -1,2 +1,1 @@
-# cicd
-CI/CD automation
+CI/CD infrastructure for Smart Seminarian
