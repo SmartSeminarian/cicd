@@ -17,4 +17,4 @@ jobs:
           echo " repo   : ${{ github.event.client_payload.repo }}"
           echo " branch : ${{ github.event.client_payload.branch }} "
           echo " sha    : ${{ github.event.client_payload.sha }}"
-          echo "=================================================================3===== "
+          echo "====================================================================== "
