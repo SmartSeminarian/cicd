@@ -9,8 +9,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+#      - name: Checkout Code
+#        uses: actions/checkout@v4
+#
       - name: Print Branch Information
         run: |
           echo "===== Initiated deploy ${{ github.event.client_payload.owner }} ===== "
@@ -22,7 +23,7 @@ jobs:
       - name: Creating .env
         run: |
           artf_name="${{ github.event.client_payload.repo }}"
-          inst_name="${{ github.event.client_payload.repo }}_${{ github.event.client_payload.branch }}"
+          inst_name="${{ artf_name }}_${{ github.event.client_payload.branch }}"
           echo "${{secrets.ENV_FILE}}" > ./.env
           echo "CONTAINER_NAME=${{ inst_name }}" >> ./.env
           echo "CONTAINER_DATA=${{vars.HOST_SERVICES_DATA}}/${{ inst }}" >> ./.env
