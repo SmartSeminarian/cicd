@@ -18,3 +18,74 @@ jobs:
           echo " branch : ${{ github.event.client_payload.branch }} "
           echo " sha    : ${{ github.event.client_payload.sha }}"
           echo "====================================================================== "
+
+      - name: Creating .env
+        run: |
+          artf_name="${{ github.event.client_payload.repo }}"
+          inst_name="${{ github.event.client_payload.repo }}_${{ github.event.client_payload.branch }}"
+          echo "${{secrets.ENV_FILE}}" > ./.env
+          echo "CONTAINER_NAME=${{ inst_name }}" >> ./.env
+          echo "CONTAINER_DATA=${{vars.HOST_SERVICES_DATA}}/${{ inst }}" >> ./.env
+          echo "SERVICE_NAME=${{ artf_name }}" >> ./.env
+          echo "CF_TOKEN_stage=${{secrets.CF_TOKEN_stage}}" >> ./.env
+          echo "CF_TOKEN_prod=${{secrets.CF_TOKEN_prod}}" >> ./.env
+          echo "BRANCH=${{env.github.event.client_payload.branch}}" >> ./.env
+          echo "VERSION_FILE=./VERSION" >> ./.env
+          ls -la
+
+      - name: CF_TOKEN generation STAGE
+        if: env.branch == 'stage'
+        run: |
+            echo "CF_TOKEN=${{secrets.CF_TOKEN_STAGE}}" >> ./.env
+
+      - name: CF_TOKEN generation PROD
+        if: env.branch == 'prod'
+        run: |
+            echo "CF_TOKEN=${{secrets.CF_TOKEN_PROD}}" >> ./.env
+
+      - name: Register ssh
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/deploy.key
+          chmod 600 ~/.ssh/deploy.key
+          cat >>~/.ssh/config <<END
+            Host remote
+            HostName $SSH_HOST
+            Port 2200
+            User $SSH_USER
+            IdentityFile ~/.ssh/deploy.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{vars.REMOTE_USER}}
+          SSH_KEY: ${{secrets.PAPHOS_PRIVATE_KEY}}
+          SSH_HOST: ${{vars.PAPHOS_HOST}}
+
+      - name: testing hostname
+        run: |
+          cat ~/.ssh/config
+          cat ~/.ssh/deploy.key
+          ssh remote /usr/bin/hostname
+#
+#      - name: Cleaning service directory
+#        run: |
+#          ssh remote rm -rf ${{vars.HOST_SERVICES_HOME}}/${{github.event.repository.name}}_${{env.branch}}
+#
+#      - name: version info
+#        run: |
+#            D=`date`
+#            echo "Deploy info: date=$D, repo= ${{github.repository_owner}}/${{github.event.repository.name}}, branch=${{env.branch}}, sha=${{github.sha}}" > ./VERSION
+#
+#      - name: Copy launch and config files
+#        run: |
+#          ssh remote mkdir -p ${{vars.HOST_SERVICES_HOME}}/${{github.event.repository.name}}_${{env.branch}}
+#          scp  ./deploy/* remote:${{vars.HOST_SERVICES_HOME}}/${{github.event.repository.name}}_${{env.branch}}/
+#          scp  ./.env remote:${{vars.HOST_SERVICES_HOME}}/${{github.event.repository.name}}_${{env.branch}}/
+#          scp  ./VERSION remote:${{vars.HOST_SERVICES_HOME}}/${{github.event.repository.name}}_${{env.branch}}/
+#
+#      - name: Run docker-compose
+#        run: |
+#          ssh remote docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_DEPLOY_PASSWORD}}
+#          ssh remote docker compose --project-directory ${{vars.HOST_SERVICES_HOME}}/${{github.event.repository.name}}_${{env.branch}}/ down
+#          ssh remote docker pull ${{secrets.DOCKER_USERNAME}}/${{github.event.repository.name}}:${{env.branch}}
+#          ssh remote docker compose --project-directory ${{vars.HOST_SERVICES_HOME}}/${{github.event.repository.name}}_${{env.branch}}/ up --detach --force-recreate --remove-orphans
