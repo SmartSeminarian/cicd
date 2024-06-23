@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Print Branch Information
-        run: echo "Triggered by commit to branch: ${{ github.event.client_payload.branch }}"
+        run: |
+          echo "Triggered by commit to branch:"
