@@ -13,9 +13,9 @@ jobs:
       INSTANCE:    "${{ github.event.client_payload.repo }}_${{ github.event.client_payload.branch }}"
 
     steps:
-#      - name: Checkout Code
-#        uses: actions/checkout@v4
-#
+      - name: Checkout CI/CD
+        uses: actions/checkout@v4
+
       - name: Print Branch Information
         run: |
           echo "===== Initiated deploy ${{ github.event.client_payload.owner }} ===== "
