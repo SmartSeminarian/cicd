@@ -51,15 +51,15 @@ jobs:
           cat >>~/.ssh/config <<END
             Host remote
             HostName $SSH_HOST
-            Port 2200
+            Port 22
             User $SSH_USER
             IdentityFile ~/.ssh/deploy.key
             StrictHostKeyChecking no
           END
         env:
           SSH_USER: ${{vars.REMOTE_USER}}
-          SSH_KEY: ${{secrets.PAPHOS_PRIVATE_KEY}}
-          SSH_HOST: ${{vars.PAPHOS_HOST}}
+          SSH_KEY: ${{secrets.TARGET_PRIVATE_KEY}}
+          SSH_HOST: ${{secrets.TARGET_IP}}
 
       - name: testing hostname
         run: |
