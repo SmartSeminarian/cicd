@@ -9,8 +9,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      SERVICE:     ${{ github.event.client_payload.repo }}"
-      INSTANCE:    ${{ github.event.client_payload.repo }}_${{ github.event.client_payload.branch }}"
+      SERVICE:     "${{ github.event.client_payload.repo }}"
+      INSTANCE:    "${{ github.event.client_payload.repo }}_${{ github.event.client_payload.branch }}"
 
     steps:
 #      - name: Checkout Code
