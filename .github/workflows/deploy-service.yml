@@ -83,7 +83,7 @@ jobs:
       - name: Copy launch and config files
         run: |
           ssh remote mkdir -p ${{vars.HOST_SERVICES_HOME}}/$INSTANCE
-          scp  ./deploy/* remote:${{vars.HOST_SERVICES_HOME}}/$INSTANCE
+          scp  ./deploy/$SERVICE/* remote:${{vars.HOST_SERVICES_HOME}}/$INSTANCE
           scp  ./.env remote:${{vars.HOST_SERVICES_HOME}}/$INSTANCE
           scp  ./VERSION remote:${{vars.HOST_SERVICES_HOME}}/$INSTANCE
 
