@@ -23,7 +23,7 @@ jobs:
       - name: Creating .env
         run: |
           artf_name="${{ github.event.client_payload.repo }}"
-          inst_name="${{ github.event.client_payload.repo }}_${{ github.event.client_payload.branch }}"
+          inst_name="${{ artf_name }}_${{ github.event.client_payload.branch }}"
           echo "${{secrets.ENV_FILE}}" > ./.env
           echo "CONTAINER_NAME=${{ inst_name }}" >> ./.env
           echo "CONTAINER_DATA=${{vars.HOST_SERVICES_DATA}}/${{ inst }}" >> ./.env
