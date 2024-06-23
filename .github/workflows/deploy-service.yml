@@ -13,4 +13,4 @@ jobs:
         uses: actions/checkout@v4
       - name: Print Branch Information
         run: |
-          echo "Triggered: ${{ github.event.client_payload.owner }}  ${{ github.event.client_payload.repo }}"
+          echo "owner: ${{ github.event.client_payload.owner }}  repo:${{ github.event.client_payload.repo }}"
