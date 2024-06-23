@@ -72,7 +72,8 @@ jobs:
 
       - name: Cleaning service directory
         run: |
-          ssh remote rm -rf $INSTANCE
+          ssh remote mkdir -p   ${{vars.HOST_SERVICES_HOME}}/$INSTANCE/
+          ssh remote rm    -rf  ${{vars.HOST_SERVICES_HOME}}/$INSTANCE/
 
       - name: version info
         run: |
