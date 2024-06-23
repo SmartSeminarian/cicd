@@ -1,0 +1,15 @@
+name: Deploy requested
+
+on:
+  repository_dispatch:
+    types:
+      - commit-to-branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Print Branch Information
+        run: echo "Triggered by commit to branch: ${{ github.event.client_payload.branch }}"
