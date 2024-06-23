@@ -13,4 +13,4 @@ jobs:
         uses: actions/checkout@v4
       - name: Print Branch Information
         run: |
-          echo "Triggered by commit to branch: ${{ github.event.client_payload.branch }}"
+          echo "Triggered by commit to branch: ${{ github.event.client_payload.branch }}@{{env.sha_short}}"
