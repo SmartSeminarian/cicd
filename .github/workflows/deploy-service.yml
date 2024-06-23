@@ -11,7 +11,7 @@ jobs:
     env:
       SERVICE:     ${{ github.event.client_payload.repo }}"
       INSTANCE:    ${{ github.event.client_payload.repo }}_${{ github.event.client_payload.branch }}"
-      HOST_SERVICES_DATA: /home/ubuntu/services/data
+
     steps:
 #      - name: Checkout Code
 #        uses: actions/checkout@v4
@@ -69,26 +69,27 @@ jobs:
           cat ~/.ssh/config
           cat ~/.ssh/deploy.key
           ssh remote /usr/bin/hostname
-#
-#      - name: Cleaning service directory
-#        run: |
-#          ssh remote rm -rf ${{vars.HOST_SERVICES_HOME}}/${{github.event.repository.name}}_${{env.branch}}
-#
-#      - name: version info
-#        run: |
-#            D=`date`
-#            echo "Deploy info: date=$D, repo= ${{github.repository_owner}}/${{github.event.repository.name}}, branch=${{env.branch}}, sha=${{github.sha}}" > ./VERSION
-#
-#      - name: Copy launch and config files
-#        run: |
-#          ssh remote mkdir -p ${{vars.HOST_SERVICES_HOME}}/${{github.event.repository.name}}_${{env.branch}}
-#          scp  ./deploy/* remote:${{vars.HOST_SERVICES_HOME}}/${{github.event.repository.name}}_${{env.branch}}/
-#          scp  ./.env remote:${{vars.HOST_SERVICES_HOME}}/${{github.event.repository.name}}_${{env.branch}}/
-#          scp  ./VERSION remote:${{vars.HOST_SERVICES_HOME}}/${{github.event.repository.name}}_${{env.branch}}/
-#
-#      - name: Run docker-compose
-#        run: |
-#          ssh remote docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_DEPLOY_PASSWORD}}
-#          ssh remote docker compose --project-directory ${{vars.HOST_SERVICES_HOME}}/${{github.event.repository.name}}_${{env.branch}}/ down
-#          ssh remote docker pull ${{secrets.DOCKER_USERNAME}}/${{github.event.repository.name}}:${{env.branch}}
-#          ssh remote docker compose --project-directory ${{vars.HOST_SERVICES_HOME}}/${{github.event.repository.name}}_${{env.branch}}/ up --detach --force-recreate --remove-orphans
+
+      - name: Cleaning service directory
+        run: |
+          ssh remote rm -rf $INSTANCE
+
+      - name: version info
+        run: |
+            D=`date`
+            echo "Deploy info: date=$D, repo= $INSTANCE -> ${{ github.event.client_payload.sha }}" > ./VERSION
+
+      - name: Copy launch and config files
+        run: |
+          ssh remote mkdir -p ${{vars.HOST_SERVICES_HOME}}/$INSTANCE
+          scp  ./deploy/* remote:${{vars.HOST_SERVICES_HOME}}/$INSTANCE
+          scp  ./.env remote:${{vars.HOST_SERVICES_HOME}}/$INSTANCE
+          scp  ./VERSION remote:${{vars.HOST_SERVICES_HOME}}/$INSTANCE
+
+      - name: Run docker-compose
+        run: |
+          ssh remote docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_DEPLOY_PASSWORD}}
+          ssh remote docker compose --project-directory ${{vars.HOST_SERVICES_HOME}}/$INSTANCE/ down
+          ssh remote docker pull ${{secrets.DOCKER_USERNAME}}/$SERVICE:${{ github.event.client_payload.branch }}
+          ssh remote docker compose --project-directory ${{vars.HOST_SERVICES_HOME}}/$INSTANCE/ up --detach --force-recreate --remove-orphans
+
