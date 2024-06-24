@@ -58,7 +58,7 @@ jobs:
           echo "CF_TOKEN=${{secrets.CF_TOKEN_FRONT}}" >> ./.env
 
       - name: CF_TOKEN generation debug
-        if: github.event.client_payload.branch != 'prod' || github.event.client_payload.branch != 'stage'
+        if: github.event.client_payload.branch != 'prod' && github.event.client_payload.branch != 'stage'
         run : |
           echo "CF_TOKEN=${{secrets.CF_TOKEN_DBG}}" >> ./.env
 
@@ -107,6 +107,6 @@ jobs:
         run: |
           ssh remote docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
           ssh remote docker compose --project-directory ${{vars.HOST_SERVICES_HOME}}/$INSTANCE/ down
-          ssh remote docker pull ${{secrets.DOCKER_USERNAME}}/$SERVICE:${{ github.event.client_payload.branch }}
+          ssh remote docker pull ${{secrets.DOCKER_USERNAME}}/$PROJECT.$SERVICE:${{ github.event.client_payload.branch }}
           ssh remote docker compose --project-directory ${{vars.HOST_SERVICES_HOME}}/$INSTANCE/ up --detach --force-recreate --remove-orphans
 
