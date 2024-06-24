@@ -17,13 +17,13 @@ jobs:
       - name: Checkout CI/CD
         uses: actions/checkout@v4
 
-#      - name: Print Branch Information
-#        run: |
-#          echo "===== Initiated deploy ${{ github.event.client_payload.owner }} ===== "
-#          echo " repo   : ${{ github.event.client_payload.repo }}"
-#          echo " branch : ${{ github.event.client_payload.branch }} "
-#          echo " sha    : ${{ github.event.client_payload.sha }}"
-#          echo "====================================================================== "
+      - name: Print Branch Information
+        run: |
+          echo "===== Initiated deploy ${{ github.event.client_payload.owner }} ===== "
+          echo " repo   : ${{ github.event.client_payload.repo }}"
+          echo " branch : ${{ github.event.client_payload.branch }} "
+          echo " sha    : ${{ github.event.client_payload.sha }}"
+          echo "====================================================================== "
 
       - name: Creating .env
         run: |
@@ -41,30 +41,30 @@ jobs:
 
       - name: CF_TOKEN generation
         run: |
-          if [ "$case_var" == "front-end" ]; then
+          if [ ${{ github.event.client_payload.repo }} == "front-end" ]; then
             echo "front-end detected"
-            if [ "$sub_case_var" == "stage" ]; then
+            if [ ${{ github.event.client_payload.branch }} == "stage" ]; then
               echo "Stage instance detected"
               echo "CF_TOKEN=${{secrets.CF_TOKEN_FRONT_STAGE}}" >> ./.env
-            elif [ "$sub_case_var" == "prod" ]; then
+            elif [ ${{ github.event.client_payload.branch }} == "prod" ]; then
               echo "Prod instance detected"
               echo "CF_TOKEN=${{secrets.CF_TOKEN_FRONT}}" >> ./.env
             else
               echo "!!! Unknown instance !!!"
             fi
-          elif [ "$case_var" == "back-end" ]; then
+          elif [ ${{ github.event.client_payload.repo }} == "back-end" ]; then
             echo "back-end detected"
-            if [ "$sub_case_var" == "stage" ]; then
+            if [ ${{ github.event.client_payload.branch }} == "stage" ]; then
               echo "Stage instance detected"
               echo "CF_TOKEN=${{secrets.CF_TOKEN_API_STAGE}}" >> ./.env
-            elif [ "$sub_case_var" == "prod" ]; then
+            elif [ ${{ github.event.client_payload.branch }} == "prod" ]; then
               echo "Prod instance detected"
               echo "CF_TOKEN=${{secrets.CF_TOKEN_API}}" >> ./.env
             else
               echo "!!! Unknown instance !!!"
             fi
           else
-            echo "Generating CF_TOKEN for dbg.csai.site"
+            echo "Non production flow branch. Generating CF_TOKEN for dbg.csai.site"
             echo "CF_TOKEN=${{secrets.CF_TOKEN_DBG}}" >> ./.env
           fi
 
