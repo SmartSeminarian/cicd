@@ -37,6 +37,7 @@ jobs:
           echo "VERSION_FILE=./VERSION" >> ./.env
           ls -la
 
+
 #      - name: CF_TOKEN generation STAGE
 #        if: env.branch == 'stage'
 #        run: |
