@@ -39,17 +39,6 @@ jobs:
           ls -la
 
 
-#      - name: CF_TOKEN generation STAGE
-#        if: env.branch == 'stage'
-#        run: |
-#            echo "CF_TOKEN=${{secrets.CF_TOKEN_STAGE}}" >> ./.env
-#
-#      - name: CF_TOKEN generation PROD
-#        if: env.branch == 'prod'
-#        run: |
-#            echo "CF_TOKEN=${{secrets.CF_TOKEN_PROD}}" >> ./.env
-
-
       - name: CF_TOKEN generation
         run: |
           if [ "$case_var" == "front-end" ]; then
@@ -75,7 +64,8 @@ jobs:
               echo "!!! Unknown instance !!!"
             fi
           else
-            echo "No CF_TOKEN generated"
+            echo "Generating CF_TOKEN for dbg.csai.site"
+            echo "CF_TOKEN=${{secrets.CF_TOKEN_DBG}}" >> ./.env
           fi
 
 
