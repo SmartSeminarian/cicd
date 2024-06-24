@@ -13,7 +13,7 @@ jobs:
       INSTANCE:    "${{ github.event.client_payload.repo }}_${{ github.event.client_payload.branch }}"
 
     steps:
-      -
+
       - name: Checkout CI/CD
         uses: actions/checkout@v4
 
