@@ -107,6 +107,6 @@ jobs:
         run: |
           ssh remote docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
           ssh remote docker compose --project-directory ${{vars.HOST_SERVICES_HOME}}/$INSTANCE/ down
-          ssh remote docker pull ${{secrets.DOCKER_USERNAME}}/$PROJECT.$SERVICE:${{ github.event.client_payload.branch }}
+          ssh remote docker pull ${{secrets.DOCKER_USERNAME}}/seminarian.${{github.event.client_payload.repo}}:${{ github.event.client_payload.branch }}
           ssh remote docker compose --project-directory ${{vars.HOST_SERVICES_HOME}}/$INSTANCE/ up --detach --force-recreate --remove-orphans
 
