@@ -37,30 +37,29 @@ jobs:
           ls -la
 
 
-      - name: CF_TOKEN generation
+      - name: CF_TOKEN generation back-end:stage
         if: github.event.client_payload.repo == 'back-end' && github.event.client_payload.branch == 'stage'
         run : |
-          echo "back-end:stage detected"
           echo "CF_TOKEN=${{secrets.CF_TOKEN_API_STAGE}}" >> ./.env
 
+      - name: CF_TOKEN generation front-end:stage
         if: github.event.client_payload.repo == 'front-end' && github.event.client_payload.branch == 'stage'
         run : |
-          echo "front-end:stage detected"
           echo "CF_TOKEN=${{secrets.CF_TOKEN_FRONT_STAGE}}" >> ./.env
 
+      - name: CF_TOKEN generation back-end:prod
         if: github.event.client_payload.repo == 'back-end' && github.event.client_payload.branch == 'prod'
         run : |
-          echo "back-end:prod detected"
           echo "CF_TOKEN=${{secrets.CF_TOKEN_API}}" >> ./.env
 
+      - name: CF_TOKEN generation front-end:prod
         if: github.event.client_payload.repo == 'front-end' && github.event.client_payload.branch == 'prod'
         run : |
-          echo "front-end:prod detected"
           echo "CF_TOKEN=${{secrets.CF_TOKEN_FRONT}}" >> ./.env
 
+      - name: CF_TOKEN generation debug
         if: github.event.client_payload.branch != 'prod' || github.event.client_payload.branch != 'stage'
         run : |
-          echo "Debug configuration detected. Generating CF_TOKEN for dbg.csai.site"
           echo "CF_TOKEN=${{secrets.CF_TOKEN_DBG}}" >> ./.env
 
       - name: Register ssh
