@@ -32,8 +32,6 @@ jobs:
           echo "CONTAINER_NAME=$INSTANCE" >> ./.env
           echo "CONTAINER_DATA=${{vars.HOST_SERVICES_DATA}}/$INSTANCE" >> ./.env
           echo "SERVICE_NAME=$SERVICE" >> ./.env
-          echo "CF_TOKEN_stage=${{secrets.CF_TOKEN_stage}}" >> ./.env
-          echo "CF_TOKEN_prod=${{secrets.CF_TOKEN_prod}}" >> ./.env
           echo "BRANCH=${{ github.event.client_payload.branch }}" >> ./.env
           echo "VERSION_FILE=./VERSION" >> ./.env
           ls -la
@@ -41,7 +39,7 @@ jobs:
 
       - name: CF_TOKEN generation
         run: |
-          if [ github.event.client_payload.repo == "front-end" ]; then
+          if [ ${{ github.event.client_payload.repo }} == front-end ]; then
             echo "front-end detected"
             if [ ${{ github.event.client_payload.branch }} == "stage" ]; then
               echo "Stage instance detected"
