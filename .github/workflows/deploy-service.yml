@@ -27,7 +27,7 @@ jobs:
       - name: Creating .env
         run: |
           echo "${{secrets.ENV_FILE}}" > ./.env
-          echo "PROJECT=${{ github.event.client_payload.owner }}" >> ./.env
+          echo "PROJECT=seminarian" >> ./.env
           echo "CONTAINER_NAME=$INSTANCE" >> ./.env
           echo "CONTAINER_DATA=${{vars.HOST_SERVICES_DATA}}/$INSTANCE" >> ./.env
           echo "SERVICE_NAME=$SERVICE" >> ./.env
