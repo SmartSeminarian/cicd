@@ -50,7 +50,8 @@ jobs:
               echo "Prod instance detected"
               echo "CF_TOKEN=${{secrets.CF_TOKEN_FRONT}}" >> ./.env
             else
-              echo "!!! Unknown instance !!!"
+            echo "Non production flow branch. Generating CF_TOKEN for dbg.csai.site"
+            echo "CF_TOKEN=${{secrets.CF_TOKEN_DBG}}" >> ./.env
             fi
           elif [ ${{ github.event.client_payload.repo }} == "back-end" ]; then
             echo "back-end detected"
@@ -61,11 +62,11 @@ jobs:
               echo "Prod instance detected"
               echo "CF_TOKEN=${{secrets.CF_TOKEN_API}}" >> ./.env
             else
-              echo "!!! Unknown instance !!!"
+              echo "Non production flow branch. Generating CF_TOKEN for dbg.csai.site"
+              echo "CF_TOKEN=${{secrets.CF_TOKEN_DBG}}" >> ./.env
             fi
           else
-            echo "Non production flow branch. Generating CF_TOKEN for dbg.csai.site"
-            echo "CF_TOKEN=${{secrets.CF_TOKEN_DBG}}" >> ./.env
+            echo "!!! Unknown component. No CF_TOKEN will be generated !!!"
           fi
 
 
