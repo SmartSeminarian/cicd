@@ -15,7 +15,6 @@ jobs:
     steps:
       - name: Checkout CI/CD
         uses: actions/checkout@v4
-
       - name: Print Branch Information
         run: |
           echo "===== Initiated deploy ${{ github.event.client_payload.owner }} ===== "
@@ -23,7 +22,6 @@ jobs:
           echo " branch : ${{ github.event.client_payload.branch }} "
           echo " sha    : ${{ github.event.client_payload.sha }}"
           echo "====================================================================== "
-
       - name: Creating .env
         run: |
           echo "${{secrets.ENV_FILE}}" > ./.env
