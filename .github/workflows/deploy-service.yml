@@ -38,6 +38,11 @@ jobs:
 
 
       - name: CF_TOKEN generation
+        if: github.event.client_payload.repo == 'back-end' && github.event.client_payload.branch == 'stage'
+        run : |
+          echo "back-end:stage detected"
+          echo "CF_TOKEN=${{secrets.CF_TOKEN_FRONT_STAGE}}" >> ./.env
+
         run: |
           if [ github.event.client_payload.repo == 'front-end' ]; then
             echo "front-end detected"
