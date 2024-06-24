@@ -31,21 +31,51 @@ jobs:
           echo "CONTAINER_NAME=$INSTANCE" >> ./.env
           echo "CONTAINER_DATA=${{vars.HOST_SERVICES_DATA}}/$INSTANCE" >> ./.env
           echo "SERVICE_NAME=$SERVICE" >> ./.env
-          echo "CF_TOKEN_stage=${{secrets.CF_TOKEN_stage}}" >> ./.env
-          echo "CF_TOKEN_prod=${{secrets.CF_TOKEN_prod}}" >> ./.env
+#          echo "CF_TOKEN_stage=${{secrets.CF_TOKEN_stage}}" >> ./.env
+#          echo "CF_TOKEN_prod=${{secrets.CF_TOKEN_prod}}" >> ./.env
           echo "BRANCH=${{ github.event.client_payload.branch }}" >> ./.env
           echo "VERSION_FILE=./VERSION" >> ./.env
           ls -la
 
-      - name: CF_TOKEN generation STAGE
-        if: env.branch == 'stage'
-        run: |
-            echo "CF_TOKEN=${{secrets.CF_TOKEN_STAGE}}" >> ./.env
+#      - name: CF_TOKEN generation STAGE
+#        if: env.branch == 'stage'
+#        run: |
+#            echo "CF_TOKEN=${{secrets.CF_TOKEN_STAGE}}" >> ./.env
+#
+#      - name: CF_TOKEN generation PROD
+#        if: env.branch == 'prod'
+#        run: |
+#            echo "CF_TOKEN=${{secrets.CF_TOKEN_PROD}}" >> ./.env
+          
 
-      - name: CF_TOKEN generation PROD
-        if: env.branch == 'prod'
+      - name: CF_TOKEN generation
         run: |
-            echo "CF_TOKEN=${{secrets.CF_TOKEN_PROD}}" >> ./.env
+          if [ "$case_var" == "front-end" ]; then
+            echo "front-end detected"
+            if [ "$sub_case_var" == "stage" ]; then
+              echo "Stage instance detected"
+              echo "CF_TOKEN=${{secrets.CF_TOKEN_FRONT_STAGE}}" >> ./.env
+            elif [ "$sub_case_var" == "prod" ]; then
+              echo "Prod instance detected"
+              echo "CF_TOKEN=${{secrets.CF_TOKEN_FRONT}}" >> ./.env          
+            else
+              echo "!!! Unknown instance !!!"
+            fi
+          elif [ "$case_var" == "back-end" ]; then
+            echo "back-end detected"
+            if [ "$sub_case_var" == "stage" ]; then
+              echo "Stage instance detected"
+              echo "CF_TOKEN=${{secrets.CF_TOKEN_API_STAGE}}" >> ./.env
+            elif [ "$sub_case_var" == "prod" ]; then
+              echo "Prod instance detected"
+              echo "CF_TOKEN=${{secrets.CF_TOKEN_API}}" >> ./.env
+            else
+              echo "!!! Unknown instance !!!"
+            fi
+          else
+            echo "No CF_TOKEN generated"
+          fi
+
 
       - name: Register ssh
         run: |
