@@ -43,35 +43,35 @@ jobs:
           echo "back-end:stage detected"
           echo "CF_TOKEN=${{secrets.CF_TOKEN_FRONT_STAGE}}" >> ./.env
 
-        run: |
-          if [ github.event.client_payload.repo == 'front-end' ]; then
-            echo "front-end detected"
-            if [ ${{ github.event.client_payload.branch }} == "stage" ]; then
-              echo "Stage instance detected"
-              echo "CF_TOKEN=${{secrets.CF_TOKEN_FRONT_STAGE}}" >> ./.env
-            elif [ ${{ github.event.client_payload.branch }} == "prod" ]; then
-              echo "Prod instance detected"
-              echo "CF_TOKEN=${{secrets.CF_TOKEN_FRONT}}" >> ./.env
-            else
-            echo "Non production flow branch. Generating CF_TOKEN for dbg.csai.site"
-            echo "CF_TOKEN=${{secrets.CF_TOKEN_DBG}}" >> ./.env
-            fi
-          elif [ ${{ github.event.client_payload.repo }} == "back-end" ]; then
-            echo "back-end detected"
-            if [ ${{ github.event.client_payload.branch }} == "stage" ]; then
-              echo "Stage instance detected"
-              echo "CF_TOKEN=${{secrets.CF_TOKEN_API_STAGE}}" >> ./.env
-            elif [ ${{ github.event.client_payload.branch }} == "prod" ]; then
-              echo "Prod instance detected"
-              echo "CF_TOKEN=${{secrets.CF_TOKEN_API}}" >> ./.env
-            else
-              echo "Non production flow branch. Generating CF_TOKEN for dbg.csai.site"
-              echo "CF_TOKEN=${{secrets.CF_TOKEN_DBG}}" >> ./.env
-            fi
-          else
-            echo "!!! Unknown component. No CF_TOKEN will be generated !!!"
-          fi
-
+#        run: |
+#          if [ github.event.client_payload.repo == 'front-end' ]; then
+#            echo "front-end detected"
+#            if [ ${{ github.event.client_payload.branch }} == "stage" ]; then
+#              echo "Stage instance detected"
+#              echo "CF_TOKEN=${{secrets.CF_TOKEN_FRONT_STAGE}}" >> ./.env
+#            elif [ ${{ github.event.client_payload.branch }} == "prod" ]; then
+#              echo "Prod instance detected"
+#              echo "CF_TOKEN=${{secrets.CF_TOKEN_FRONT}}" >> ./.env
+#            else
+#            echo "Non production flow branch. Generating CF_TOKEN for dbg.csai.site"
+#            echo "CF_TOKEN=${{secrets.CF_TOKEN_DBG}}" >> ./.env
+#            fi
+#          elif [ ${{ github.event.client_payload.repo }} == "back-end" ]; then
+#            echo "back-end detected"
+#            if [ ${{ github.event.client_payload.branch }} == "stage" ]; then
+#              echo "Stage instance detected"
+#              echo "CF_TOKEN=${{secrets.CF_TOKEN_API_STAGE}}" >> ./.env
+#            elif [ ${{ github.event.client_payload.branch }} == "prod" ]; then
+#              echo "Prod instance detected"
+#              echo "CF_TOKEN=${{secrets.CF_TOKEN_API}}" >> ./.env
+#            else
+#              echo "Non production flow branch. Generating CF_TOKEN for dbg.csai.site"
+#              echo "CF_TOKEN=${{secrets.CF_TOKEN_DBG}}" >> ./.env
+#            fi
+#          else
+#            echo "!!! Unknown component. No CF_TOKEN will be generated !!!"
+#          fi
+#
 
       - name: Register ssh
         run: |
