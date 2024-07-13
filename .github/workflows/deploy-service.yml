@@ -34,8 +34,19 @@ jobs:
           echo "SERVICE_NAME=$SERVICE" >> ./.env
           echo "BRANCH=${{ github.event.client_payload.branch }}" >> ./.env
           echo "VERSION_FILE=./VERSION" >> ./.env
+          echo "AUTH_SECRET=${{secrets.AUTH_SECRET}}" >> ./.env          
           ls -la
 
+      - name: GITHUB_APP generation front-end:stage
+        if: github.event.client_payload.repo == 'front-end' && github.event.client_payload.branch == 'stage'
+        run : |
+          echo "AUTH_GITHUB_ID=${{secrets.AUTH_GITHUB_ID_STAGE}}" >> ./.env
+          echo "AUTH_GITHUB_SECRET=${{secrets.AUTH_GITHUB_SECRET_STAGE}}" >> ./.env
+
+      - name: GITHUB_APP generation front-end:prod
+        if: github.event.client_payload.repo == 'front-end' && github.event.client_payload.branch == 'prod'
+        run : |
+          echo "!!! NOT IMPLEMENTED YET !!!"
 
       - name: CF_TOKEN generation back-end:stage
         if: github.event.client_payload.repo == 'back-end' && github.event.client_payload.branch == 'stage'
