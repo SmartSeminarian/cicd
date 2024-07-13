@@ -43,7 +43,7 @@ jobs:
           echo "AUTH_GITHUB_ID=${{secrets.AUTH_GITHUB_ID_STAGE}}" >> ./.env
           echo "AUTH_GITHUB_SECRET=${{secrets.AUTH_GITHUB_SECRET_STAGE}}" >> ./.env
 
-       - name: GITHUB_APP generation front-end:prod
+      - name: GITHUB_APP generation front-end:prod
         if: github.event.client_payload.repo == 'front-end' && github.event.client_payload.branch == 'prod'
         run : |
           echo "!!! NOT IMPLEMENTED YET !!!"
