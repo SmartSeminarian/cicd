@@ -121,3 +121,9 @@ jobs:
           ssh remote docker pull ${{secrets.DOCKER_USERNAME}}/seminarian.${{github.event.client_payload.repo}}:${{ github.event.client_payload.branch }}
           ssh remote docker compose --project-directory ${{vars.HOST_SERVICES_HOME}}/$INSTANCE/ up --detach --force-recreate --remove-orphans
 
+      - name: Run ui-tests in front-end repository
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.CICD_GITHUB_TOKEN }}
+          repository: ActionTests/front-end
+          event-type: stage-deploy
