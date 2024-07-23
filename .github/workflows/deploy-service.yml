@@ -122,6 +122,7 @@ jobs:
           ssh remote docker compose --project-directory ${{vars.HOST_SERVICES_HOME}}/$INSTANCE/ up --detach --force-recreate --remove-orphans
 
       - name: Run ui-tests in front-end repository
+        if: github.event.client_payload.repo == 'front-end' && github.event.client_payload.branch == 'stage'
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.CICD_GITHUB_TOKEN }}
