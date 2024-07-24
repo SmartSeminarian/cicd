@@ -57,6 +57,7 @@ jobs:
         if: github.event.client_payload.repo == 'front-end' && github.event.client_payload.branch == 'stage'
         run : |
           echo "CF_TOKEN=${{secrets.CF_TOKEN_FRONT_STAGE}}" >> ./.env
+          echo "ORIGIN=http://https://seminarian-stage.csai.site/" >> ./.env
 
       - name: CF_TOKEN generation back-end:prod
         if: github.event.client_payload.repo == 'back-end' && github.event.client_payload.branch == 'prod'
