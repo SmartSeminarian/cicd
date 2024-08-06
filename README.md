@@ -1,3 +1,7 @@
+
+#### status
+[![Deploy](https://github.com/SmartSeminarian/cicd/actions/workflows/deploy-service.yml/badge.svg)](https://github.com/SmartSeminarian/cicd/actions/workflows/deploy-service.yml)
+
 CI/CD infrastructure for Smart Seminarian
 
 #### How to use
@@ -6,5 +10,3 @@ CI/CD infrastructure for Smart Seminarian
 
 **Note:** some names should be changed (e.g. `krinkin` for hub.docker.com account)
 
-#### status
-[![Last Deploy](https://github.com/SmartSeminarian/cicd/actions/workflows/deploy-service.yml/badge.svg)](https://github.com/SmartSeminarian/cicd/actions/workflows/deploy-service.yml)
