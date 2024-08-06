@@ -35,6 +35,7 @@ jobs:
           echo "BRANCH=${{ github.event.client_payload.branch }}" >> ./.env
           echo "VERSION_FILE=./VERSION" >> ./.env
           echo "AUTH_SECRET=${{secrets.AUTH_SECRET}}" >> ./.env          
+          echo "OPEN_AI_API_KEY=${{secrets.OPEN_AI_API_KEY}}"
           ls -la
 
       - name: GITHUB_APP generation front-end:stage
