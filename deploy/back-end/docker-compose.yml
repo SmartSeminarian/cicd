@@ -13,6 +13,11 @@ services:
             - MEMGRAPH_LOG_LEVEL=TRACE
         networks:
             - app-network
+        healthcheck:
+            test: ["CMD", "exit", "0"]
+            interval: 10s
+            timeout: 5s
+            retries: 3
 
     service:
         container_name: $CONTAINER_NAME
