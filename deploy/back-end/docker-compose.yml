@@ -13,11 +13,6 @@ services:
             - MEMGRAPH_LOG_LEVEL=TRACE
         networks:
             - app-network
-        healthcheck:
-            test: ["CMD", "telnet", "localhost", "7687"]
-            interval: 10s
-            timeout: 5s
-            retries: 5
 
     service:
         container_name: $CONTAINER_NAME
