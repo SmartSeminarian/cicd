@@ -3,18 +3,12 @@ services:
         image: "memgraph/memgraph-platform"
         ports:
             - "7687:7687"
-        volumes:
-            - mg_lib:/var/lib/memgraph
-            - mg_log:/var/log/memgraph
-            - mg_etc:/etc/memgraph
-        env_file:
-            - ./.env
         environment:
             - MEMGRAPH_LOG_LEVEL=TRACE
         networks:
             - app-network
         healthcheck:
-            test: ["CMD", "exit", "0"]
+            test: ["CMD", "true"]
             interval: 10s
             timeout: 5s
             retries: 3
@@ -30,10 +24,10 @@ services:
             - $CONTAINER_DATA:/data
             - $VERSION_FILE:/VERSION:ro
         depends_on:
-            memgraph:
-                condition: service_healthy
+            - memgraph
         networks:
             - app-network
+        restart: unless-stopped
 
     tunnel:
         container_name: ${CONTAINER_NAME}_tunnel
@@ -53,8 +47,3 @@ services:
 
 networks:
     app-network:
-
-volumes:
-    mg_lib:
-    mg_log:
-    mg_etc:
