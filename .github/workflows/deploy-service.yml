@@ -36,6 +36,8 @@ jobs:
           echo "VERSION_FILE=./VERSION" >> ./.env
           echo "AUTH_SECRET=${{secrets.AUTH_SECRET}}" >> ./.env          
           echo "OPENAI_API_KEY=${{secrets.OPENAI_API_KEY}}"  >> ./.env
+          echo "MEMGRAPH_HOST=${{secrets.MEMGRAPH_HOST}}"  >> ./.env
+          echo "MEMGRAPH_PORT=${{secrets.MEMGRAPH_PORT}}"  >> ./.env
           ls -la
 
       - name: GITHUB_APP generation front-end:stage
