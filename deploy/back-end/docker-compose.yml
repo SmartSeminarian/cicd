@@ -3,6 +3,10 @@ services:
         image: "memgraph/memgraph-platform"
         ports:
             - "7687:7687"
+        volumes:
+            - mg_lib:/var/lib/memgraph
+            - mg_log:/var/log/memgraph
+            - mg_etc:/etc/memgraph
         environment:
             - MEMGRAPH_LOG_LEVEL=TRACE
         networks:
@@ -47,3 +51,8 @@ services:
 
 networks:
     app-network:
+
+volumes:
+    mg_lib:
+    mg_log:
+    mg_etc:
